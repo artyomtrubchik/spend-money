@@ -257,10 +257,12 @@ const setItemQuantity = (itemId, newQuantity) => {
 // Render cart
 const renderCart = () => {
     const cartItems = document.getElementById('cartItems');
+    const cartShare = document.getElementById('cartShare');
     
     if (cart.length === 0) {
         cartItems.innerHTML = '<p class="empty-cart">Пока ничего не куплено</p>';
         document.getElementById('mostExpensive').style.display = 'none';
+        cartShare.style.display = 'none';
         return;
     }
     
@@ -277,6 +279,9 @@ const renderCart = () => {
     
     // Show most expensive item
     updateMostExpensive();
+    
+    // Show share buttons if there are items in cart
+    cartShare.style.display = 'flex';
 };
 
 // Update most expensive item display
@@ -343,9 +348,88 @@ const resetGame = () => {
     items.forEach(item => updateItemCard(item.id));
     document.getElementById('successModal').style.display = 'none';
     document.getElementById('mostExpensive').style.display = 'none';
+    document.getElementById('cartShare').style.display = 'none';
     
     // Show the items grid again when resetting the game
     document.getElementById('itemsGrid').style.display = 'grid';
+};
+
+// Создаем текст с результатами для шаринга
+const createShareText = () => {
+    const totalSpent = TOTAL_BUDGET - remainingBudget;
+    
+    let shareText = `🤑 Я потратил(а) ${formatPrice(totalSpent)} из бюджета ПСЖ! 🤑\n\n`;
+    
+    // Добавляем топ-3 самых дорогих покупок
+    const sortedCart = [...cart].sort((a, b) => (b.price * b.quantity) - (a.price * a.quantity));
+    const top3 = sortedCart.slice(0, 3);
+    
+    shareText += 'Мои самые дорогие покупки:\n';
+    top3.forEach((item, index) => {
+        shareText += `${index + 1}. ${item.emoji} ${item.name} - ${formatPrice(item.price * item.quantity)}\n`;
+    });
+    
+    shareText += `\nВсего ${cart.length} различных покупок!\n`;
+    shareText += 'Потрать деньги ПСЖ на https://www.sports.ru/';
+    
+    return shareText;
+};
+
+// Копируем текст в буфер обмена
+const copyTextToClipboard = (text, successElementId = 'copySuccess') => {
+    // Пробуем использовать современное API clipboard
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                showCopySuccess(successElementId);
+            })
+            .catch(err => {
+                console.error('Ошибка при копировании: ', err);
+                fallbackCopyTextToClipboard(text, successElementId);
+            });
+    } else {
+        fallbackCopyTextToClipboard(text, successElementId);
+    }
+};
+
+// Запасной метод копирования текста
+const fallbackCopyTextToClipboard = (text, successElementId = 'copySuccess') => {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    
+    // Скрываем элемент
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showCopySuccess(successElementId);
+        } else {
+            console.error('Не удалось скопировать текст');
+        }
+    } catch (err) {
+        console.error('Ошибка при копировании текста: ', err);
+    }
+    
+    document.body.removeChild(textArea);
+};
+
+// Показываем сообщение об успешном копировании
+const showCopySuccess = (elementId = 'copySuccess') => {
+    const copySuccess = document.getElementById(elementId);
+    copySuccess.textContent = 'Текст скопирован!';
+    copySuccess.classList.add('visible');
+    
+    // Скрываем сообщение через 3 секунды
+    setTimeout(() => {
+        copySuccess.classList.remove('visible');
+    }, 3000);
 };
 
 // Event listeners
@@ -429,4 +513,44 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Play again button
     document.getElementById('playAgainBtn').addEventListener('click', resetGame);
+    
+    // Share button in final modal
+    document.getElementById('copyBtn').addEventListener('click', () => {
+        const shareText = createShareText();
+        copyTextToClipboard(shareText);
+    });
+    
+    // Telegram share button in final modal
+    document.getElementById('tgBtn').addEventListener('click', () => {
+        const shareText = encodeURIComponent(createShareText());
+        const telegramUrl = `https://t.me/share/url?url=https://www.sports.ru/&text=${shareText}`;
+        window.open(telegramUrl, '_blank');
+    });
+    
+    // WhatsApp share button in final modal
+    document.getElementById('waBtn').addEventListener('click', () => {
+        const shareText = encodeURIComponent(createShareText());
+        const whatsappUrl = `https://wa.me/?text=${shareText}`;
+        window.open(whatsappUrl, '_blank');
+    });
+    
+    // Share button in cart
+    document.getElementById('copyCartBtn').addEventListener('click', () => {
+        const shareText = createShareText();
+        copyTextToClipboard(shareText, 'cartCopySuccess');
+    });
+    
+    // Telegram share button in cart
+    document.getElementById('tgCartBtn').addEventListener('click', () => {
+        const shareText = encodeURIComponent(createShareText());
+        const telegramUrl = `https://t.me/share/url?url=https://www.sports.ru/&text=${shareText}`;
+        window.open(telegramUrl, '_blank');
+    });
+    
+    // WhatsApp share button in cart
+    document.getElementById('waCartBtn').addEventListener('click', () => {
+        const shareText = encodeURIComponent(createShareText());
+        const whatsappUrl = `https://wa.me/?text=${shareText}`;
+        window.open(whatsappUrl, '_blank');
+    });
 }); 

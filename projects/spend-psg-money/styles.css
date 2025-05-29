@@ -906,4 +906,136 @@ h1 {
         transform: translateY(100vh) rotate(720deg);
         opacity: 0;
     }
+}
+
+.share-btn {
+    background: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.share-btn i {
+    font-size: 18px;
+}
+
+.copy-btn {
+    color: var(--luxury-burgundy);
+}
+
+.copy-btn:hover {
+    background: #f5f5f5;
+}
+
+.tg-btn {
+    color: #0088cc;
+}
+
+.tg-btn:hover {
+    background: #e6f7ff;
+}
+
+.wa-btn {
+    color: #25D366;
+}
+
+.wa-btn:hover {
+    background: #e6ffe6;
+}
+
+.share-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    vertical-align: middle;
+    object-fit: contain;
+}
+
+.share-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.share-text {
+    font-size: 14px;
+    color: var(--luxury-cream);
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.copy-success {
+    color: var(--luxury-gold);
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.copy-success.visible {
+    opacity: 1;
+}
+
+.cart-share {
+    margin: 20px 0;
+    padding: 15px;
+    background: linear-gradient(135deg, 
+        rgba(212, 175, 55, 0.05) 0%, 
+        rgba(212, 175, 55, 0.1) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    animation: slideInCart 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cart-share .share-buttons {
+    margin-top: 10px;
+}
+
+.cart-share .share-btn {
+    font-size: 14px;
+    padding: 10px 15px;
+}
+
+.cart-share .share-text {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+    .cart-share .share-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .cart-share .share-btn {
+        width: 100%;
+    }
 } 
