@@ -13,18 +13,30 @@
         </header>
 
         <div class="intro">
-            <p>С 2011 года катарские инвесторы вложили в ПСЖ более <span class="highlight">€2,2 миллиарда</span>. Это астрономическая сумма!</p>
-            <p>А теперь представьте, что у вас есть все эти деньги. На что бы вы их потратили?</p>
+            <p>Представь, что у тебя есть <span class="highlight">€2,2 миллиарда</span> – столько стоит клуб ПСЖ по оценке Forbes.</p>
+            <p>Твоя задача – потратить все деньги. Выбирай товары, добавляй их в корзину и постарайся потратить всю сумму до последнего евро!</p>
         </div>
 
-        <div class="money-display">
+        <div class="money-display" id="moneyDisplay">
             <div class="remaining">
                 <span class="label">Осталось потратить:</span>
                 <span class="amount" id="remainingAmount">€2,200,000,000</span>
             </div>
             <div class="spent">
-                <span class="label">Потрачено:</span>
+                <span class="label">Уже потрачено:</span>
                 <span class="amount" id="spentAmount">€0</span>
+            </div>
+        </div>
+
+        <!-- Фиксированный элемент для отображения при скролле -->
+        <div class="money-display-fixed" id="moneyDisplayFixed">
+            <div class="remaining">
+                <span class="label">Осталось потратить:</span>
+                <span class="amount" id="remainingAmountFixed">€2,200,000,000</span>
+            </div>
+            <div class="spent">
+                <span class="label">Уже потрачено:</span>
+                <span class="amount" id="spentAmountFixed">€0</span>
             </div>
         </div>
 

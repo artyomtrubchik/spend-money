@@ -16,17 +16,23 @@ const formatPrice = (price) => {
 const updateMoneyDisplay = () => {
     const remainingElement = document.getElementById('remainingAmount');
     const spentElement = document.getElementById('spentAmount');
+    const remainingFixedElement = document.getElementById('remainingAmountFixed');
+    const spentFixedElement = document.getElementById('spentAmountFixed');
     
     // Ensure we have properly formatted numbers before animation
     remainingElement.textContent = formatPrice(remainingBudget);
     spentElement.textContent = formatPrice(TOTAL_BUDGET - remainingBudget);
+    remainingFixedElement.textContent = formatPrice(remainingBudget);
+    spentFixedElement.textContent = formatPrice(TOTAL_BUDGET - remainingBudget);
     
     // Add small delay before animation to ensure rendering completes
     setTimeout(() => {
         // Animate money update
         remainingElement.classList.add('updating');
+        remainingFixedElement.classList.add('updating');
         setTimeout(() => {
             remainingElement.classList.remove('updating');
+            remainingFixedElement.classList.remove('updating');
         }, 600);
     }, 50);
     
@@ -345,6 +351,32 @@ const resetGame = () => {
 document.addEventListener('DOMContentLoaded', () => {
     renderItems();
     updateMoneyDisplay();
+    
+    // Использование Intersection Observer для отслеживания видимости основного блока с деньгами
+    const moneyDisplay = document.getElementById('moneyDisplay');
+    const moneyDisplayFixed = document.getElementById('moneyDisplayFixed');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // Если основной блок не виден, показываем фиксированный
+            if (!entry.isIntersecting) {
+                moneyDisplayFixed.classList.add('visible');
+            } else {
+                moneyDisplayFixed.classList.remove('visible');
+            }
+        });
+    }, { threshold: 0.1 }); // Показывать фиксированный блок, когда видно менее 10% основного
+    
+    observer.observe(moneyDisplay);
+    
+    // Handle scrolling for applying compact styles
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            moneyDisplayFixed.classList.add('scrolled');
+        } else {
+            moneyDisplayFixed.classList.remove('scrolled');
+        }
+    });
     
     // Quantity control buttons
     document.addEventListener('click', (e) => {
