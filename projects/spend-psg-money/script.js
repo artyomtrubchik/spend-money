@@ -111,23 +111,6 @@ const createFlyingItem = (itemElement, itemData) => {
     }, 800);
 };
 
-// Create sparkle effect
-const createSparkle = (x, y) => {
-    for (let i = 0; i < 5; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = x + 'px';
-        sparkle.style.top = y + 'px';
-        sparkle.style.transform = `rotate(${Math.random() * 360}deg)`;
-        
-        document.body.appendChild(sparkle);
-        
-        setTimeout(() => {
-            sparkle.remove();
-        }, 600);
-    }
-};
-
 // Create confetti animation
 const createConfetti = () => {
     const colors = ['#FFD700', '#D4AF37', '#FFA500', '#FF6347', '#FF1493'];
@@ -359,14 +342,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItems();
     updateMoneyDisplay();
     
-    // Quantity control buttons with sparkle effect
+    // Quantity control buttons
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('quantity-btn')) {
             const itemId = parseInt(e.target.dataset.id);
             const action = e.target.dataset.action;
-            
-            // Create sparkle effect at click position
-            createSparkle(e.clientX, e.clientY);
             
             if (action === 'increase') {
                 addToCart(itemId);
