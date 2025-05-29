@@ -149,46 +149,6 @@ const createConfetti = () => {
     }
 };
 
-// Sound effects using Web Audio API
-const createSound = (frequency, duration) => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator.frequency.value = frequency;
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + duration);
-};
-
-// Play purchase sound
-const playPurchaseSound = () => {
-    createSound(523.25, 0.1); // C5
-    setTimeout(() => createSound(659.25, 0.1), 50); // E5
-    setTimeout(() => createSound(783.99, 0.15), 100); // G5
-};
-
-// Play error sound
-const playErrorSound = () => {
-    createSound(200, 0.2);
-    setTimeout(() => createSound(150, 0.2), 100);
-};
-
-// Play success sound
-const playSuccessSound = () => {
-    const notes = [523.25, 587.33, 659.25, 698.46, 783.99, 880, 987.77, 1046.5];
-    notes.forEach((note, index) => {
-        setTimeout(() => createSound(note, 0.3), index * 100);
-    });
-};
-
 // Add item to cart
 const addToCart = (itemId) => {
     const item = items.find(i => i.id === itemId);
@@ -200,7 +160,6 @@ const addToCart = (itemId) => {
         setTimeout(() => {
             itemCard.classList.remove('insufficient-funds');
         }, 500);
-        playErrorSound();
         alert('Недостаточно средств для покупки этого товара!');
         return;
     }
@@ -213,7 +172,6 @@ const addToCart = (itemId) => {
     
     // Create flying animation
     createFlyingItem(itemCard, item);
-    playPurchaseSound();
     
     const existingItem = cart.find(i => i.id === itemId);
     if (existingItem) {
@@ -379,10 +337,9 @@ const showSuccessModal = () => {
     
     modal.style.display = 'flex';
     
-    // Add confetti effect and play success sound
+    // Add confetti effect
     setTimeout(() => {
         createConfetti();
-        playSuccessSound();
     }, 300);
 };
 
