@@ -20,6 +20,15 @@ resizeObserver.observe(document.body);
 resize();
 setTimeout(() => {
   resize();
+}, 100);
+setTimeout(() => {
+  resize();
+}, 300);
+setTimeout(() => {
+  resize();
+}, 500);
+setTimeout(() => {
+  resize();
 }, 1000);
 setTimeout(() => {
   resize();
