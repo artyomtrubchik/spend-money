@@ -77,7 +77,6 @@ body {
     font-family: var(--ui-font-family-body);
     color: var(--luxury-cream);
     background: linear-gradient(180deg, var(--luxury-wood-dark) 0%, var(--luxury-black) 100%);
-    min-height: 100vh;
     line-height: 1.6;
 }
 
