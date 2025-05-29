@@ -311,6 +311,10 @@ const checkWinCondition = () => {
 const showSuccessModal = () => {
     const modal = document.getElementById('successModal');
     const finalCart = document.getElementById('finalCart');
+    const itemsGrid = document.getElementById('itemsGrid');
+    
+    // Hide the items grid when game is completed
+    itemsGrid.style.display = 'none';
     
     finalCart.innerHTML = cart.map(item => `
         <div class="cart-item">
@@ -339,6 +343,9 @@ const resetGame = () => {
     items.forEach(item => updateItemCard(item.id));
     document.getElementById('successModal').style.display = 'none';
     document.getElementById('mostExpensive').style.display = 'none';
+    
+    // Show the items grid again when resetting the game
+    document.getElementById('itemsGrid').style.display = 'grid';
 };
 
 // Event listeners
