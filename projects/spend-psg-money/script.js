@@ -37,16 +37,42 @@ const updateMoneyDisplay = () => {
 // Update progress bar
 const updateProgressBar = () => {
     const spent = TOTAL_BUDGET - remainingBudget;
-    const percentage = Math.round((spent / TOTAL_BUDGET) * 100);
+    const percentage = (spent / TOTAL_BUDGET) * 100; // Процент потраченных денег
     
     const progressBar = document.getElementById('progressBar');
     const progressText = document.getElementById('progressText');
     
-    progressBar.style.width = percentage + '%';
-    progressText.textContent = percentage + '%';
+    // Обновляем ширину прогресс-бара (минимум 0.1% для видимости)
+    const displayWidth = Math.max(percentage, 0.1);
+    progressBar.style.width = displayWidth + '%';
+    
+    // Форматируем процент с нужной точностью
+    let percentText;
+    if (percentage === 0) {
+        percentText = '0%';
+    } else if (percentage < 0.000001) {
+        // Если очень маленький процент, показываем научную нотацию
+        percentText = percentage.toExponential(6) + '%';
+    } else if (percentage < 0.0001) {
+        // Для очень маленьких значений показываем 6 знаков после запятой
+        percentText = percentage.toFixed(6) + '%';
+    } else if (percentage < 0.01) {
+        // Для маленьких значений показываем 4 знака после запятой
+        percentText = percentage.toFixed(4) + '%';
+    } else if (percentage < 1) {
+        // Для значений меньше 1% показываем 2 знака после запятой
+        percentText = percentage.toFixed(2) + '%';
+    } else {
+        // Для остальных значений округляем до 2 знаков
+        percentText = percentage.toFixed(2) + '%';
+    }
+    
+    // Обновляем текст процента
+    progressText.innerHTML = `Вы потратили ${percentText}`;
     
     // Add special effects at milestones
-    if (percentage === 25 || percentage === 50 || percentage === 75 || percentage === 100) {
+    if (Math.round(percentage) === 25 || Math.round(percentage) === 50 || 
+        Math.round(percentage) === 75 || Math.round(percentage) === 100) {
         progressBar.style.animation = 'shimmerProgress 1s linear infinite, pulseGold 0.5s ease';
         setTimeout(() => {
             progressBar.style.animation = 'shimmerProgress 2s linear infinite';

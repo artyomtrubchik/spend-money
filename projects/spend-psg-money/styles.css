@@ -354,6 +354,35 @@ h1 {
     animation: shimmerProgress 2s linear infinite;
 }
 
+.progress-text-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.progress-text {
+    color: var(--luxury-cream);
+    font-weight: 700;
+    font-size: 16px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.progress-hint {
+    font-size: 12px;
+    opacity: 0.9;
+    font-weight: 400;
+    display: block;
+}
+
 @keyframes shimmerProgress {
     0% {
         background-position: 200% 0;
@@ -361,18 +390,6 @@ h1 {
     100% {
         background-position: -200% 0;
     }
-}
-
-.progress-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--luxury-cream);
-    font-weight: 700;
-    font-size: 16px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-    z-index: 1;
 }
 
 @media (max-width: 480px) {
@@ -409,7 +426,7 @@ h1 {
     }
     
     .progress-container {
-        height: 24px;
+        height: 40px;
         border-radius: 12px;
         margin-bottom: 15px;
     }
@@ -419,7 +436,11 @@ h1 {
     }
     
     .progress-text {
-        font-size: 12px;
+        font-size: 14px;
+    }
+    
+    .progress-hint {
+        font-size: 10px;
     }
     
     .items-grid {
