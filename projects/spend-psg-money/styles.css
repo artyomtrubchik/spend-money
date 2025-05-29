@@ -294,49 +294,65 @@ h1 {
     z-index: 1;
 }
 
-.buy-btn {
-    background: linear-gradient(135deg, var(--luxury-burgundy) 0%, var(--luxury-burgundy-light) 100%);
-    color: var(--luxury-cream);
-    border: 1px solid var(--luxury-gold);
-    padding: 8px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
-}
-
-.buy-btn:hover {
-    background: linear-gradient(135deg, var(--luxury-burgundy-light) 0%, var(--luxury-burgundy) 100%);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-    transform: translateY(-1px);
-}
-
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .quantity-btn {
     background: var(--luxury-burgundy);
     color: var(--luxury-gold);
     border: 1px solid var(--luxury-gold);
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .quantity-btn:hover {
     background: var(--luxury-burgundy-light);
     transform: scale(1.1);
+}
+
+.quantity-input {
+    width: 60px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--luxury-gold);
+    border-radius: 6px;
+    color: var(--luxury-gold-light);
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    padding: 0 8px;
+    font-family: var(--ui-font-family-body);
+    transition: all 0.3s ease;
+}
+
+.quantity-input:focus {
+    outline: none;
+    border-color: var(--luxury-gold-light);
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+/* Chrome, Safari, Edge, Opera */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.quantity-input[type=number] {
+    -moz-appearance: textfield;
 }
 
 .quantity {

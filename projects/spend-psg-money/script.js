@@ -28,10 +28,9 @@ const createItemCard = (item) => {
         <div class="item-price">${formatPrice(item.price)}</div>
         <div class="item-description">${item.description}</div>
         <div class="item-controls">
-            <button class="buy-btn" data-id="${item.id}">Купить</button>
-            <div class="quantity-controls" style="display: none;">
-                <button class="quantity-btn" data-action="decrease" data-id="${item.id}">-</button>
-                <span class="quantity" data-id="${item.id}">0</span>
+            <div class="quantity-controls">
+                <button class="quantity-btn" data-action="decrease" data-id="${item.id}">−</button>
+                <input type="number" class="quantity-input" data-id="${item.id}" value="0" min="0">
                 <button class="quantity-btn" data-action="increase" data-id="${item.id}">+</button>
             </div>
         </div>
@@ -52,17 +51,12 @@ const renderItems = () => {
 // Update item card display
 const updateItemCard = (itemId) => {
     const cartItem = cart.find(item => item.id === itemId);
-    const buyBtn = document.querySelector(`.buy-btn[data-id="${itemId}"]`);
-    const quantityControls = buyBtn.nextElementSibling;
-    const quantitySpan = document.querySelector(`.quantity[data-id="${itemId}"]`);
+    const quantityInput = document.querySelector(`.quantity-input[data-id="${itemId}"]`);
     
     if (cartItem && cartItem.quantity > 0) {
-        buyBtn.style.display = 'none';
-        quantityControls.style.display = 'flex';
-        quantitySpan.textContent = cartItem.quantity;
+        quantityInput.value = cartItem.quantity;
     } else {
-        buyBtn.style.display = 'block';
-        quantityControls.style.display = 'none';
+        quantityInput.value = 0;
     }
 };
 
@@ -105,6 +99,50 @@ const removeFromCart = (itemId) => {
     updateMoneyDisplay();
     updateItemCard(itemId);
     renderCart();
+};
+
+// Set item quantity directly
+const setItemQuantity = (itemId, newQuantity) => {
+    const item = items.find(i => i.id === itemId);
+    const cartItem = cart.find(i => i.id === itemId);
+    
+    // Ensure newQuantity is a valid number
+    newQuantity = Math.max(0, parseInt(newQuantity) || 0);
+    
+    if (newQuantity === 0) {
+        // Remove item from cart
+        if (cartItem) {
+            remainingBudget += item.price * cartItem.quantity;
+            cart = cart.filter(i => i.id !== itemId);
+        }
+    } else {
+        const currentQuantity = cartItem ? cartItem.quantity : 0;
+        const difference = newQuantity - currentQuantity;
+        const totalCost = item.price * difference;
+        
+        // Check if we can afford the new quantity
+        if (totalCost > remainingBudget) {
+            // Calculate maximum affordable quantity
+            const maxAffordable = currentQuantity + Math.floor(remainingBudget / item.price);
+            alert(`Недостаточно средств! Максимально доступное количество: ${maxAffordable}`);
+            updateItemCard(itemId); // Reset input to current value
+            return;
+        }
+        
+        // Update cart
+        if (cartItem) {
+            cartItem.quantity = newQuantity;
+        } else {
+            cart.push({ ...item, quantity: newQuantity });
+        }
+        
+        remainingBudget -= totalCost;
+    }
+    
+    updateMoneyDisplay();
+    updateItemCard(itemId);
+    renderCart();
+    checkWinCondition();
 };
 
 // Render cart
@@ -168,14 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItems();
     updateMoneyDisplay();
     
-    // Buy button clicks
+    // Quantity control buttons
     document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('buy-btn')) {
-            const itemId = parseInt(e.target.dataset.id);
-            addToCart(itemId);
-        }
-        
-        // Quantity control buttons
         if (e.target.classList.contains('quantity-btn')) {
             const itemId = parseInt(e.target.dataset.id);
             const action = e.target.dataset.action;
@@ -184,6 +216,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 addToCart(itemId);
             } else if (action === 'decrease') {
                 removeFromCart(itemId);
+            }
+        }
+    });
+    
+    // Quantity input changes
+    document.addEventListener('input', (e) => {
+        if (e.target.classList.contains('quantity-input')) {
+            const itemId = parseInt(e.target.dataset.id);
+            const newQuantity = e.target.value;
+            setItemQuantity(itemId, newQuantity);
+        }
+    });
+    
+    // Prevent negative numbers and non-numeric input
+    document.addEventListener('keydown', (e) => {
+        if (e.target.classList.contains('quantity-input')) {
+            // Allow: backspace, delete, tab, escape, enter
+            if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
             }
         }
     });
