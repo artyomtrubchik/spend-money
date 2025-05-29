@@ -192,16 +192,16 @@ h1 {
 
 @keyframes moneyUpdate {
     0% {
-        transform: scale(1);
+        transform: scale(1) translateZ(0);
         color: var(--luxury-gold-light);
     }
     50% {
-        transform: scale(1.1);
+        transform: scale(1.1) translateZ(0);
         color: var(--luxury-gold);
         text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
     }
     100% {
-        transform: scale(1);
+        transform: scale(1) translateZ(0);
         color: var(--luxury-gold-light);
     }
 }
@@ -276,11 +276,13 @@ h1 {
     font-weight: 700;
     color: var(--luxury-cream);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    will-change: transform, color;
+    transform: translateZ(0);
 }
 
 .remaining .amount {
     color: var(--luxury-gold-light);
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .remaining .amount.updating {

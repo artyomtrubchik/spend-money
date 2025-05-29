@@ -4,7 +4,7 @@ let cart = [];
 
 // Format number with spaces as thousands separator
 const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return new Intl.NumberFormat('ru-RU').format(num);
 };
 
 // Format price in euros
@@ -17,14 +17,18 @@ const updateMoneyDisplay = () => {
     const remainingElement = document.getElementById('remainingAmount');
     const spentElement = document.getElementById('spentAmount');
     
+    // Ensure we have properly formatted numbers before animation
     remainingElement.textContent = formatPrice(remainingBudget);
     spentElement.textContent = formatPrice(TOTAL_BUDGET - remainingBudget);
     
-    // Animate money update
-    remainingElement.classList.add('updating');
+    // Add small delay before animation to ensure rendering completes
     setTimeout(() => {
-        remainingElement.classList.remove('updating');
-    }, 600);
+        // Animate money update
+        remainingElement.classList.add('updating');
+        setTimeout(() => {
+            remainingElement.classList.remove('updating');
+        }, 600);
+    }, 50);
     
     // Update progress bar
     updateProgressBar();
