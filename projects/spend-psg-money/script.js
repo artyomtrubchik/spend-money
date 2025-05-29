@@ -260,7 +260,7 @@ const renderCart = () => {
     const cartShare = document.getElementById('cartShare');
     
     if (cart.length === 0) {
-        cartItems.innerHTML = '<p class="empty-cart">Пока ничего не куплено</p>';
+        cartItems.innerHTML = '<p class="empty-cart">Ваша корзина пуста</p>';
         document.getElementById('mostExpensive').style.display = 'none';
         cartShare.style.display = 'none';
         return;
@@ -369,8 +369,22 @@ const createShareText = () => {
         shareText += `${index + 1}. ${item.emoji} ${item.name} - ${formatPrice(item.price * item.quantity)}\n`;
     });
     
-    shareText += `\nВсего ${cart.length} различных покупок!\n`;
-    shareText += 'Потрать деньги ПСЖ на https://www.sports.ru/';
+    // Добавляем правильное склонение для количества покупок
+    const itemCount = cart.length;
+    let itemCountText;
+    
+    if (itemCount === 0) {
+        itemCountText = 'Нет покупок';
+    } else if (itemCount === 1) {
+        itemCountText = '1 покупка';
+    } else if (itemCount >= 2 && itemCount <= 4) {
+        itemCountText = `${itemCount} покупки`;
+    } else {
+        itemCountText = `${itemCount} покупок`;
+    }
+    
+    shareText += `\nВсего: ${itemCountText}!\n`;
+    shareText += 'Попробуй потратить деньги ПСЖ на https://www.sports.ru/';
     
     return shareText;
 };
