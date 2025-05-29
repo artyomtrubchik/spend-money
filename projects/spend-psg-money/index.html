@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Потрать все деньги ПСЖ</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="https://www.sports.ru/?utm_source=special-spend-psg-money" class="logo">
+                <img src="https://dumpster.cdn.sports.ru/e/01/b6a5c8d6223d46030fe91d0aa70cc.png" alt="Sports.ru">
+            </a>
+            <h1>Потрать все деньги ПСЖ</h1>
+        </header>
+
+        <div class="intro">
+            <p>С 2011 года катарские инвесторы вложили в ПСЖ более <span class="highlight">€2,2 миллиарда</span>. Это астрономическая сумма!</p>
+            <p>А теперь представьте, что у вас есть все эти деньги. На что бы вы их потратили?</p>
+        </div>
+
+        <div class="money-display">
+            <div class="remaining">
+                <span class="label">Осталось потратить:</span>
+                <span class="amount" id="remainingAmount">€2,200,000,000</span>
+            </div>
+            <div class="spent">
+                <span class="label">Потрачено:</span>
+                <span class="amount" id="spentAmount">€0</span>
+            </div>
+        </div>
+
+        <div class="items-grid" id="itemsGrid">
+            <!-- Items will be loaded here -->
+        </div>
+
+        <div class="cart" id="cart">
+            <h3>Ваши покупки</h3>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart">Пока ничего не куплено</p>
+            </div>
+            <button class="reset-btn" id="resetBtn">Начать заново</button>
+        </div>
+
+        <div class="success-modal" id="successModal">
+            <div class="modal-content">
+                <h2>Поздравляем! 🎉</h2>
+                <p>Вы потратили все деньги ПСЖ!</p>
+                <div class="final-cart" id="finalCart"></div>
+                <button class="play-again-btn" id="playAgainBtn">Играть снова</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./data/items.js"></script>
+    <script src="./script.js"></script>
+    <script src="./resize.js"></script>
+</body>
+</html> 

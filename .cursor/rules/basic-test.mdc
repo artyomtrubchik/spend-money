@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- Max width of project is 660px
+- Dont ever make html and body height to 100%. Leave it unset
+- When asked to give "код отображения в посте", give this (project-name is name of the folder) - 
+<iframe class="auto-height" height="668" id="special-project-{project-name}" src="https://vibe-coding-blush.vercel.app/projects/{project-name}/index.html" style="border: 0px;" width="100%"></iframe>
+<iframe class="iframe-video" height="0" src="/picker/resize/" style="height: 0px; display:none;" width="730"></iframe>
+
+- On each project generate resize.js file that you will include in index.html in the end (after all other scripts). Content of the file is - 
+const resize = () => {
+      const dataUTILS = {
+        for: 'BASIC_TEST',
+        action: 'resizeIframe',
+        selector: `iframe[src*=\\/projects\\/${projectSlug}]`,
+        sizes: {
+          height: 2 * Math.floor(document.body.scrollHeight / 2) + 10,
+        },
+      };
+
+      window?.top?.postMessage(JSON.stringify(dataUTILS), '*');
+    }
+
+const resizeObserver = new ResizeObserver(() => {
+  resize();
+});
+resizeObserver.observe(document.body);
+resize();

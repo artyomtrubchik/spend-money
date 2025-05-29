@@ -1,0 +1,78 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+Create website designs in the Sports style that convey the energy and dynamism of sports and esports. The main message is “Making sports better!”, and the design should radiate activity, modernity, and professionalism.
+
+Integrate the branded fonts and basic styles:
+@import "https://senoval.cdn.sports.ru/static-resources/fonts/roboto.css";
+@import "https://senoval.cdn.sports.ru/static-resources/fonts/sports.css";
+html {
+    box-sizing: border-box;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    word-break: normal;
+}
+
+Use the following CSS variables to define the branded colors and UI styles:
+:root {
+    /* Branded Colors for Sports */
+    --sports-primary-color: #00c78b;
+    --sports-primary-color-hover: #21a67e;
+    --sports-primary-light-color-hover: #d8f7e5;
+    --sports-green-850: #1f6650;
+    --sports-green-900: #003d2b;
+    --sports-green-50: #d8f7e5;
+    --sports-yellow-A700: #ffc300;
+    --sports-yellow-100: #f2f2f0;
+    --sports-yellow-50: #f9f9f7;
+    --sports-red-a700: #ff003c;
+    --sports-red-50: #ffe7eb;
+    --sports-orange-900: #d26e00;
+    --sports-orange-50: #fff1d9;
+    --sports-cyan-A700: #00a0f0;
+    --sports-cyan-900: #006496;
+    --sports-blue-A700: #0040fc;
+    --sports-blue-A400: #235bff;
+    --sports-blue-50: #dfe7ff;
+    --sports-purple-500: #964ba0;
+    --sports-purple-50: #aaa9aa;
+    --sports-black: #000;
+    --sports-grey-1050: #1a1a1a;
+    --sports-grey-1000: #171717;
+    --sports-grey-900: #222;
+    --sports-grey-850: #323232;
+    --sports-grey-800: #4a4a4a;
+    --sports-grey-700: #4c4c4c;
+    --sports-grey-600: #757575;
+    --sports-grey-500: #7f7f7f;
+    --sports-grey-400: #9b9b9b;
+    --sports-grey-100: #d8d8d8;
+    --sports-grey-50: #efefef;
+
+    /* UI elements and typography */
+    --ui-bg: #fff;
+    --ui-font-family-body: "Neoris", "Roboto", sans-serif;
+    --ui-font-family-heading: "Sports", sans-serif;
+    --ui-font-family-heading-primary: "Sports", sans-serif;
+    --ui-font-family-heading-secondary: "Neoris", "Roboto", sans-serif;
+    /* Additional parameters can be set as needed */
+}
+
+Adhere to the following principles:
+- Logos: Logos must maintain minimum dimensions and safe areas as per the guidelines. Use the following logo variants:
+    - Transparent background, "sports" text in mint color: https://dumpster.cdn.sports.ru/e/01/b6a5c8d6223d46030fe91d0aa70cc.png
+    - Mint background, "sports" text in black: https://dumpster.cdn.sports.ru/0/08/cc55d04e9b8982897827dccb94e8f.png
+    - Black background, "sports" text in mint: https://dumpster.cdn.sports.ru/2/d2/0266f2830fbca50f821147bc0c010.png
+- Typography: Style headings with the "Sports" font (e.g., 40px, 32px, 24px) and use the "Roboto" or Neoris font family for the main text.
+- Patterns and Pictograms: Use branded patterns (both static and dynamic) and pictograms designed on a 20×20 px grid to create accent elements.
+- Layout: The layout should follow a modular grid with clearly defined columns, margins, and safe areas to ensure compositional balance.
+- Branded Colors: Apply the branded colors (for example, using var(--sports-primary-color) for accents, var(--sports-primary-color-hover) for interactive elements, and var(--sports-black) for texts) to maintain the style’s recognizability.
+- Goal: Create a website that visually conveys the dynamic energy of sports, emphasizes the professionalism of the Sports brand, and features a modern, clean, and technologically advanced interface.
+
