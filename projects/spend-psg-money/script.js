@@ -16,23 +16,17 @@ const formatPrice = (price) => {
 const updateMoneyDisplay = () => {
     const remainingElement = document.getElementById('remainingAmount');
     const spentElement = document.getElementById('spentAmount');
-    const remainingFixedElement = document.getElementById('remainingAmountFixed');
-    const spentFixedElement = document.getElementById('spentAmountFixed');
     
     // Ensure we have properly formatted numbers before animation
     remainingElement.textContent = formatPrice(remainingBudget);
     spentElement.textContent = formatPrice(TOTAL_BUDGET - remainingBudget);
-    remainingFixedElement.textContent = formatPrice(remainingBudget);
-    spentFixedElement.textContent = formatPrice(TOTAL_BUDGET - remainingBudget);
     
     // Add small delay before animation to ensure rendering completes
     setTimeout(() => {
         // Animate money update
         remainingElement.classList.add('updating');
-        remainingFixedElement.classList.add('updating');
         setTimeout(() => {
             remainingElement.classList.remove('updating');
-            remainingFixedElement.classList.remove('updating');
         }, 600);
     }, 50);
     
@@ -352,29 +346,33 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItems();
     updateMoneyDisplay();
     
-    // Использование Intersection Observer для отслеживания видимости основного блока с деньгами
+    // Получаем необходимые элементы
+    const moneyDisplayContainer = document.getElementById('moneyDisplayContainer');
     const moneyDisplay = document.getElementById('moneyDisplay');
-    const moneyDisplayFixed = document.getElementById('moneyDisplayFixed');
     
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            // Если основной блок не виден, показываем фиксированный
-            if (!entry.isIntersecting) {
-                moneyDisplayFixed.classList.add('visible');
-            } else {
-                moneyDisplayFixed.classList.remove('visible');
-            }
-        });
-    }, { threshold: 0.1 }); // Показывать фиксированный блок, когда видно менее 10% основного
+    // Определяем позицию контейнера
+    let containerTop = moneyDisplayContainer.offsetTop;
+    let moneyDisplayHeight = moneyDisplay.offsetHeight;
     
-    observer.observe(moneyDisplay);
+    // Обновляем позицию при изменении размера окна
+    window.addEventListener('resize', () => {
+        containerTop = moneyDisplayContainer.offsetTop;
+        moneyDisplayHeight = moneyDisplay.offsetHeight;
+    });
     
-    // Handle scrolling for applying compact styles
+    // Слушаем событие скролла
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            moneyDisplayFixed.classList.add('scrolled');
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Если проскроллили ниже контейнера, добавляем sticky-header
+        if (scrollTop > containerTop) {
+            moneyDisplayContainer.classList.add('sticky-header');
+            moneyDisplay.classList.add('compact-view');
+            document.body.style.paddingTop = moneyDisplayHeight + 'px';
         } else {
-            moneyDisplayFixed.classList.remove('scrolled');
+            moneyDisplayContainer.classList.remove('sticky-header');
+            moneyDisplay.classList.remove('compact-view');
+            document.body.style.paddingTop = '0';
         }
     });
     

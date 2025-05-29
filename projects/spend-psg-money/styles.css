@@ -231,41 +231,21 @@ h1 {
     margin-bottom: 30px;
     position: relative;
     z-index: 100;
-    padding: 10px;
+    padding: 15px;
     transition: all 0.3s ease;
 }
 
 .money-display-fixed {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    max-width: 660px;
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 101;
-    padding: 15px;
-    background: rgba(44, 24, 16, 0.98);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
+    display: none;
 }
 
-.money-display-fixed.visible {
-    transform: translateY(0);
-}
-
-.money-display-fixed.scrolled {
+/* Уменьшаем отступы между элементами при скролле */
+.compact-view .money-display {
     gap: 8px;
     padding: 10px 15px;
 }
 
-.money-display > div, .money-display-fixed > div {
+.money-display > div {
     background: linear-gradient(135deg, var(--luxury-wood-medium) 0%, var(--luxury-wood-light) 100%);
     border-radius: 12px;
     padding: 15px;
@@ -275,14 +255,26 @@ h1 {
     transition: all 0.3s ease;
 }
 
-.money-display.scrolled > div {
-    padding: 12px;
+.compact-view .money-display > div {
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
-.money-display-fixed.scrolled > div {
-    padding: 10px;
+.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 660px;
+    width: calc(100% - 20px);
+    padding: 10px 0;
+    background: rgba(44, 24, 16, 0.98);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+    border-radius: 0 0 16px 16px;
+    z-index: 101;
 }
 
 .remaining {
@@ -384,27 +376,27 @@ h1 {
 }
 
 @media (max-width: 480px) {
-    .money-display, .money-display-fixed {
+    .money-display {
         grid-template-columns: 1fr;
         gap: 8px;
         padding: 12px;
     }
     
-    .money-display-fixed.scrolled {
+    .compact-view .money-display {
         gap: 6px;
         padding: 8px 12px;
     }
     
-    .money-display-fixed.scrolled .amount {
+    .compact-view .money-display .amount {
         font-size: 16px;
     }
     
-    .money-display > div, .money-display-fixed > div {
+    .money-display > div {
         padding: 12px;
     }
     
-    .money-display-fixed.scrolled > div {
-        padding: 10px;
+    .compact-view .money-display > div {
+        padding: 8px;
     }
     
     .container {
