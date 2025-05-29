@@ -14,8 +14,40 @@ const formatPrice = (price) => {
 
 // Update money display
 const updateMoneyDisplay = () => {
-    document.getElementById('remainingAmount').textContent = formatPrice(remainingBudget);
-    document.getElementById('spentAmount').textContent = formatPrice(TOTAL_BUDGET - remainingBudget);
+    const remainingElement = document.getElementById('remainingAmount');
+    const spentElement = document.getElementById('spentAmount');
+    
+    remainingElement.textContent = formatPrice(remainingBudget);
+    spentElement.textContent = formatPrice(TOTAL_BUDGET - remainingBudget);
+    
+    // Animate money update
+    remainingElement.classList.add('updating');
+    setTimeout(() => {
+        remainingElement.classList.remove('updating');
+    }, 600);
+    
+    // Update progress bar
+    updateProgressBar();
+};
+
+// Update progress bar
+const updateProgressBar = () => {
+    const spent = TOTAL_BUDGET - remainingBudget;
+    const percentage = Math.round((spent / TOTAL_BUDGET) * 100);
+    
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    
+    progressBar.style.width = percentage + '%';
+    progressText.textContent = percentage + '%';
+    
+    // Add special effects at milestones
+    if (percentage === 25 || percentage === 50 || percentage === 75 || percentage === 100) {
+        progressBar.style.animation = 'shimmerProgress 1s linear infinite, pulseGold 0.5s ease';
+        setTimeout(() => {
+            progressBar.style.animation = 'shimmerProgress 2s linear infinite';
+        }, 500);
+    }
 };
 
 // Create item card HTML
@@ -60,13 +92,128 @@ const updateItemCard = (itemId) => {
     }
 };
 
+// Create flying item animation
+const createFlyingItem = (itemElement, itemData) => {
+    const rect = itemElement.getBoundingClientRect();
+    const cart = document.getElementById('cart');
+    const cartRect = cart.getBoundingClientRect();
+    
+    const flyingItem = document.createElement('div');
+    flyingItem.className = 'flying-item';
+    flyingItem.innerHTML = `<span style="font-size: 48px;">${itemData.emoji}</span>`;
+    flyingItem.style.left = rect.left + rect.width / 2 - 24 + 'px';
+    flyingItem.style.top = rect.top + 'px';
+    
+    document.body.appendChild(flyingItem);
+    
+    setTimeout(() => {
+        flyingItem.remove();
+    }, 800);
+};
+
+// Create sparkle effect
+const createSparkle = (x, y) => {
+    for (let i = 0; i < 5; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = x + 'px';
+        sparkle.style.top = y + 'px';
+        sparkle.style.transform = `rotate(${Math.random() * 360}deg)`;
+        
+        document.body.appendChild(sparkle);
+        
+        setTimeout(() => {
+            sparkle.remove();
+        }, 600);
+    }
+};
+
+// Create confetti animation
+const createConfetti = () => {
+    const colors = ['#FFD700', '#D4AF37', '#FFA500', '#FF6347', '#FF1493'];
+    
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animation = `confettiFall ${2 + Math.random() * 2}s linear forwards`;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 4000);
+        }, i * 50);
+    }
+};
+
+// Sound effects using Web Audio API
+const createSound = (frequency, duration) => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = frequency;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + duration);
+};
+
+// Play purchase sound
+const playPurchaseSound = () => {
+    createSound(523.25, 0.1); // C5
+    setTimeout(() => createSound(659.25, 0.1), 50); // E5
+    setTimeout(() => createSound(783.99, 0.15), 100); // G5
+};
+
+// Play error sound
+const playErrorSound = () => {
+    createSound(200, 0.2);
+    setTimeout(() => createSound(150, 0.2), 100);
+};
+
+// Play success sound
+const playSuccessSound = () => {
+    const notes = [523.25, 587.33, 659.25, 698.46, 783.99, 880, 987.77, 1046.5];
+    notes.forEach((note, index) => {
+        setTimeout(() => createSound(note, 0.3), index * 100);
+    });
+};
+
 // Add item to cart
 const addToCart = (itemId) => {
     const item = items.find(i => i.id === itemId);
+    const itemElement = document.querySelector(`.quantity-input[data-id="${itemId}"]`);
+    const itemCard = itemElement.closest('.item-card');
+    
     if (item.price > remainingBudget) {
+        itemCard.classList.add('insufficient-funds');
+        setTimeout(() => {
+            itemCard.classList.remove('insufficient-funds');
+        }, 500);
+        playErrorSound();
         alert('Недостаточно средств для покупки этого товара!');
         return;
     }
+    
+    // Add animation classes
+    itemCard.classList.add('adding');
+    setTimeout(() => {
+        itemCard.classList.remove('adding');
+    }, 500);
+    
+    // Create flying animation
+    createFlyingItem(itemCard, item);
+    playPurchaseSound();
     
     const existingItem = cart.find(i => i.id === itemId);
     if (existingItem) {
@@ -105,6 +252,8 @@ const removeFromCart = (itemId) => {
 const setItemQuantity = (itemId, newQuantity) => {
     const item = items.find(i => i.id === itemId);
     const cartItem = cart.find(i => i.id === itemId);
+    const itemElement = document.querySelector(`.quantity-input[data-id="${itemId}"]`);
+    const itemCard = itemElement.closest('.item-card');
     
     // Ensure newQuantity is a valid number
     newQuantity = Math.max(0, parseInt(newQuantity) || 0);
@@ -124,9 +273,24 @@ const setItemQuantity = (itemId, newQuantity) => {
         if (totalCost > remainingBudget) {
             // Calculate maximum affordable quantity
             const maxAffordable = currentQuantity + Math.floor(remainingBudget / item.price);
+            itemCard.classList.add('insufficient-funds');
+            setTimeout(() => {
+                itemCard.classList.remove('insufficient-funds');
+            }, 500);
             alert(`Недостаточно средств! Максимально доступное количество: ${maxAffordable}`);
             updateItemCard(itemId); // Reset input to current value
             return;
+        }
+        
+        // Add animation if increasing quantity
+        if (difference > 0) {
+            itemCard.classList.add('adding');
+            setTimeout(() => {
+                itemCard.classList.remove('adding');
+            }, 500);
+            
+            // Create flying animation
+            createFlyingItem(itemCard, item);
         }
         
         // Update cart
@@ -151,6 +315,7 @@ const renderCart = () => {
     
     if (cart.length === 0) {
         cartItems.innerHTML = '<p class="empty-cart">Пока ничего не куплено</p>';
+        document.getElementById('mostExpensive').style.display = 'none';
         return;
     }
     
@@ -164,6 +329,30 @@ const renderCart = () => {
             <span class="cart-item-total">${formatPrice(item.price * item.quantity)}</span>
         </div>
     `).join('');
+    
+    // Show most expensive item
+    updateMostExpensive();
+};
+
+// Update most expensive item display
+const updateMostExpensive = () => {
+    if (cart.length === 0) return;
+    
+    const mostExpensive = cart.reduce((max, item) => 
+        (item.price * item.quantity > max.price * max.quantity) ? item : max
+    );
+    
+    const mostExpensiveDiv = document.getElementById('mostExpensive');
+    const expensiveItem = document.getElementById('expensiveItem');
+    
+    mostExpensiveDiv.style.display = 'block';
+    expensiveItem.innerHTML = `
+        <span class="emoji">${mostExpensive.emoji}</span>
+        <div class="details">
+            <div class="name">${mostExpensive.name}</div>
+            <div class="price">${formatPrice(mostExpensive.price * mostExpensive.quantity)}</div>
+        </div>
+    `;
 };
 
 // Check win condition
@@ -189,6 +378,12 @@ const showSuccessModal = () => {
     `).join('');
     
     modal.style.display = 'flex';
+    
+    // Add confetti effect and play success sound
+    setTimeout(() => {
+        createConfetti();
+        playSuccessSound();
+    }, 300);
 };
 
 // Reset game
@@ -199,6 +394,7 @@ const resetGame = () => {
     renderCart();
     items.forEach(item => updateItemCard(item.id));
     document.getElementById('successModal').style.display = 'none';
+    document.getElementById('mostExpensive').style.display = 'none';
 };
 
 // Event listeners
@@ -206,11 +402,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItems();
     updateMoneyDisplay();
     
-    // Quantity control buttons
+    // Quantity control buttons with sparkle effect
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('quantity-btn')) {
             const itemId = parseInt(e.target.dataset.id);
             const action = e.target.dataset.action;
+            
+            // Create sparkle effect at click position
+            createSparkle(e.clientX, e.clientY);
             
             if (action === 'increase') {
                 addToCart(itemId);

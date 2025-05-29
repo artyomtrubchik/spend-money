@@ -31,6 +31,11 @@
             </div>
         </div>
 
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
+
         <div class="items-grid" id="itemsGrid">
             <!-- Items will be loaded here -->
         </div>
@@ -39,6 +44,10 @@
             <h3>Ваши покупки</h3>
             <div class="cart-items" id="cartItems">
                 <p class="empty-cart">Пока ничего не куплено</p>
+            </div>
+            <div class="most-expensive" id="mostExpensive" style="display: none;">
+                <h4>Самая дорогая покупка:</h4>
+                <div class="expensive-item" id="expensiveItem"></div>
             </div>
             <button class="reset-btn" id="resetBtn">Начать заново</button>
         </div>

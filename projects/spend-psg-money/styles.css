@@ -147,6 +147,76 @@ h1 {
     100% { transform: translateX(100%) translateY(100%); }
 }
 
+@keyframes flyToCart {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.5) translateY(-100px);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0) translateY(-200px);
+        opacity: 0;
+    }
+}
+
+@keyframes pulseGold {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.05);
+        filter: brightness(1.3);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes sparkle {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInCart {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes moneyUpdate {
+    0% {
+        transform: scale(1);
+        color: var(--luxury-gold-light);
+    }
+    50% {
+        transform: scale(1.1);
+        color: var(--luxury-gold);
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        color: var(--luxury-gold-light);
+    }
+}
+
 .intro p {
     font-size: 16px;
     margin-bottom: 10px;
@@ -207,6 +277,60 @@ h1 {
 
 .remaining .amount {
     color: var(--luxury-gold-light);
+    transition: all 0.3s ease;
+}
+
+.remaining .amount.updating {
+    animation: moneyUpdate 0.6s ease;
+}
+
+.progress-container {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 1px solid var(--luxury-gold);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, 
+        var(--luxury-burgundy) 0%, 
+        var(--luxury-gold) 50%, 
+        var(--luxury-burgundy) 100%);
+    background-size: 200% 100%;
+    border-radius: 20px;
+    transition: width 0.5s ease;
+    animation: shimmerProgress 2s linear infinite;
+}
+
+@keyframes shimmerProgress {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--luxury-cream);
+    font-weight: 700;
+    font-size: 18px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    z-index: 1;
 }
 
 .items-grid {
@@ -250,6 +374,14 @@ h1 {
     transform: translateY(-4px);
     box-shadow: 0 10px 36px rgba(0, 0, 0, 0.7);
     border-color: var(--luxury-gold);
+}
+
+.item-card.adding {
+    animation: pulseGold 0.5s ease;
+}
+
+.item-card.insufficient-funds {
+    animation: shake 0.5s ease;
 }
 
 .item-emoji {
@@ -401,6 +533,7 @@ h1 {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     border: 1px solid rgba(212, 175, 55, 0.2);
+    animation: slideInCart 0.3s ease;
 }
 
 .cart-item:last-child {
@@ -432,6 +565,53 @@ h1 {
     font-weight: 700;
     color: var(--luxury-gold-light);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.most-expensive {
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, 
+        rgba(212, 175, 55, 0.1) 0%, 
+        rgba(212, 175, 55, 0.2) 100%);
+    border-radius: 12px;
+    border: 1px solid var(--luxury-gold);
+    animation: slideInCart 0.5s ease;
+}
+
+.most-expensive h4 {
+    font-size: 16px;
+    color: var(--luxury-gold);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.expensive-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 18px;
+}
+
+.expensive-item .emoji {
+    font-size: 32px;
+    animation: pulseGold 2s ease infinite;
+}
+
+.expensive-item .details {
+    flex: 1;
+}
+
+.expensive-item .name {
+    color: var(--luxury-cream);
+    font-weight: 700;
+}
+
+.expensive-item .price {
+    color: var(--luxury-gold-light);
+    font-size: 20px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .reset-btn {
@@ -557,4 +737,41 @@ h1 {
 .cart-items::-webkit-scrollbar-thumb:hover,
 .final-cart::-webkit-scrollbar-thumb:hover {
     background: var(--luxury-gold-light);
+}
+
+.flying-item {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    animation: flyToCart 0.8s ease-out forwards;
+}
+
+.sparkle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, var(--luxury-gold-light) 0%, transparent 70%);
+    pointer-events: none;
+    animation: sparkle 0.6s ease-out forwards;
+}
+
+/* Confetti for success */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--luxury-gold);
+    pointer-events: none;
+    z-index: 1001;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
 } 
