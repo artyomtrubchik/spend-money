@@ -471,6 +471,69 @@ h1 {
     .cart h3 {
         font-size: 22px;
     }
+    
+    /* Улучшенные стили для корзины на мобильных устройствах */
+    .cart-item {
+        padding: 15px;
+        margin-bottom: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .cart-item-info {
+        margin-bottom: 8px;
+        width: 100%;
+    }
+    
+    .cart-item-emoji {
+        font-size: 28px;
+        margin-right: 5px;
+    }
+    
+    .cart-item-name {
+        font-size: 15px;
+        line-height: 1.4;
+    }
+    
+    .cart-item-quantity {
+        margin-left: auto;
+        padding: 2px 8px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    .cart-item-total {
+        font-size: 18px;
+        margin-top: 5px;
+        align-self: flex-end;
+        padding: 3px 8px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    
+    .cart-items {
+        max-height: 250px;
+    }
+    
+    .most-expensive {
+        padding: 15px;
+    }
+    
+    .expensive-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .expensive-item .emoji {
+        margin-bottom: 10px;
+    }
+    
+    .expensive-item .price {
+        margin-top: 5px;
+    }
 }
 
 .items-grid {
