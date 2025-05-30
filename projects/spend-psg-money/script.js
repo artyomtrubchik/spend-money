@@ -1,4 +1,4 @@
-const TOTAL_BUDGET = 2200000000; // €2.2 billion
+const TOTAL_BUDGET = 3100000000; // €3.1 billion
 let remainingBudget = TOTAL_BUDGET;
 let cart = [];
 
